@@ -9,6 +9,11 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.room.hourstracker.dto.CreateEntryRequest;
+import jakarta.validation.Valid;
+
+
+
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(origins = "http://localhost:5174")
@@ -38,7 +43,7 @@ public class TimeEntryController {
     }
 
     @PostMapping("/time-entries")
-    public TimeEntry create(@RequestBody CreateEntryRequest body) {
+    public TimeEntry create(@Valid @RequestBody CreateEntryRequest body) {
         return service.create(body);
     }
 
@@ -48,5 +53,5 @@ public class TimeEntryController {
         service.delete(id);
     }
 
-    public record CreateEntryRequest(Long projectId, LocalDate date, double hours, String notes, boolean billable) {}
+//    public record CreateEntryRequest(Long projectId, LocalDate date, double hours, String notes, boolean billable) {}
 }
