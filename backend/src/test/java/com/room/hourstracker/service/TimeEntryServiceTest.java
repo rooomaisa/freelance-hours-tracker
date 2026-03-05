@@ -125,4 +125,33 @@ class TimeEntryServiceTest {
 
 
     }
+
+    @Test
+    void delete_shouldRemoveEntry_whenEntryExists() {
+        // Arrange
+        when(entries.existsById(1L)).thenReturn(true);
+        // Act
+        service.delete(1L);
+        // Assert
+        verify(entries).deleteById(1L);
+    }
+
+    @Test
+    void delete_shouldThrowNotFound_whenEntryDoesNotExist() {
+
+        // Arrange
+        when(entries.existsById(1L)).thenReturn(false);
+
+        // Act + Assert
+        ResponseStatusException ex = assertThrows(
+                ResponseStatusException.class,
+                () -> service.delete(1L)
+        );
+
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+
+        verify(entries, never()).deleteById(any());
+    }
+
+
 }
