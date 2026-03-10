@@ -17,9 +17,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDate;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 // later we may add jsonPath and content
@@ -108,6 +107,31 @@ class TimeEntryControllerTest {
 
         verify(timeEntryService).create(any(CreateEntryRequest.class));
 
+    }
+    @Test
+    @DisplayName("DELETE /time-entries/{id} returns success when entry exists")
+    void delete_shouldReturnSuccess_whenEntryExists() throws Exception {
+
+        doNothing().when(timeEntryService).delete(1L);
+
+        mockMvc.perform(delete("/api/time-entries/1"))
+                .andExpect(status().isNoContent());
+
+        verify(timeEntryService).delete(1L);
+    }
+
+    @Test
+    @DisplayName("DELETE /api/time-entries/{id} returns 404 when entry does not exist")
+    void delete_shouldReturn404_whenEntryDoesNotExist() throws Exception {
+
+        doThrow(new NotFoundException("Entry not found"))
+                .when(timeEntryService)
+                .delete(1L);
+
+        mockMvc.perform(delete("/api/time-entries/1"))
+                .andExpect(status().isNotFound());
+
+        verify(timeEntryService).delete(1L);
     }
 
 
