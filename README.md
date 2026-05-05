@@ -68,3 +68,8 @@ GET /api/time-entries?start=YYYY-MM-DD&end=YYYY-MM-DD
 ## 📌 Author
 
 - GitHub: https://github.com/rooomaisa
+
+
+## Related Repositories
+
+- Frontend: https://github.com/rooomaisa/freelance-hours-tracker-frontend
